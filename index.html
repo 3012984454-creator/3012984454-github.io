@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陈思豫的博客</title>
+  <meta name="description" content="记录学习、分享生活">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --bg-elevated: #1c2128;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-secondary: #8b949e;
+      --text-muted: #6e7681;
+      --primary: #58a6ff;
+      --primary-dim: #1f6feb;
+      --accent: #a371f7;
+      --success: #3fb950;
+      --warning: #d29922;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    [data-theme="light"] {
+      --bg: #ffffff;
+      --bg-card: #f6f8fa;
+      --bg-elevated: #eaeef2;
+      --border: #d0d7de;
+      --text: #1f2328;
+      --text-secondary: #656d76;
+      --text-muted: #8c959f;
+      --primary: #0969da;
+      --primary-dim: #0550ae;
+      --accent: #8250df;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: background 0.3s, color 0.3s;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Theme toggle */
+    .theme-toggle {
+      position: fixed; top: 1rem; right: 1rem; z-index: 1000;
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--bg-card);
+      color: var(--text); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; transition: all 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--primary); }
+
+    /* Header */
+    .site-header {
+      background: var(--bg-card); border-bottom: 1px solid var(--border);
+      padding: 1rem 0; position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .site-header .container {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo {
+      font-family: 'Noto Serif SC', serif; font-size: 1.4rem;
+      font-weight: 700; color: var(--text);
+    }
+    .logo:hover { text-decoration: none; color: var(--primary); }
+    .main-nav { display: flex; gap: 1.5rem; }
+    .nav-link {
+      color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;
+      padding: 0.25rem 0; border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--primary); text-decoration: none;
+      border-bottom-color: var(--primary);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 4rem 0 3rem; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -50%; left: -20%;
+      width: 60%; height: 120%;
+      background: radial-gradient(ellipse, rgba(88,166,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.4rem 1rem; border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(88,166,255,0.1), rgba(163,113,247,0.1));
+      color: var(--primary); font-size: 0.8rem; font-weight: 600;
+      margin-bottom: 1.5rem; border: 1px solid rgba(88,166,255,0.15);
+    }
+    .hero-title {
+      font-family: 'Noto Serif SC', serif; font-size: 2.5rem; font-weight: 700;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--text), var(--text-secondary));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 1.05rem; color: var(--text-secondary);
+      max-width: 480px; margin: 0 auto 2rem;
+    }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 2rem; margin-top: 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      display: block; font-size: 1.8rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Section */
+    .section { padding: 3rem 0; }
+    .section-title {
+      font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    /* Featured post card */
+    .post-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      transition: all 0.3s; cursor: pointer;
+    }
+    .post-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(88,166,255,0.25);
+    }
+    .post-card.featured { display: grid; grid-template-columns: 280px 1fr; }
+    .post-cover {
+      position: relative; height: 100%; min-height: 200px;
+    }
+    .post-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .post-cover-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent 50%);
+      display: flex; align-items: flex-end; padding: 1rem;
+    }
+    .post-cover-badge {
+      padding: 0.3rem 0.7rem; background: rgba(211,153,23,0.9);
+      color: #1f2328; border-radius: 6px;
+      font-size: 0.75rem; font-weight: 600;
+    }
+    .post-body { padding: 1.5rem; }
+    .post-meta {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.75rem; flex-wrap: wrap;
+    }
+    .post-tag {
+      padding: 0.2rem 0.6rem; border-radius: 9999px;
+      font-size: 0.75rem; font-weight: 600;
+    }
+    .post-tag.ielts {
+      background: rgba(88,166,255,0.12); color: var(--primary);
+    }
+    .post-date { font-size: 0.8rem; color: var(--text-muted); }
+    .post-readtime { font-size: 0.8rem; color: var(--warning); }
+    .post-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .post-desc {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.7; margin-bottom: 1rem;
+    }
+    .scores-preview {
+      display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .score-tag {
+      padding: 0.3rem 0.7rem; border-radius: 8px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .score-tag.listening { background: rgba(88,166,255,0.1); color: #58a6ff; }
+    .score-tag.reading { background: rgba(163,113,247,0.1); color: #a371f7; }
+    .score-tag.writing { background: rgba(47,129,247,0.1); color: #2f81f7; }
+    .score-tag.overall {
+      background: linear-gradient(135deg, rgba(88,166,255,0.15), rgba(163,113,247,0.15));
+      color: var(--primary); border: 1px solid rgba(88,166,255,0.2);
+    }
+    .post-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 0.5rem;
+    }
+    .read-more { font-size: 0.9rem; font-weight: 600; color: var(--primary); }
+    .post-note { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Small post card */
+    .posts-grid { display: grid; gap: 1rem; }
+    .post-card-small { display: grid; grid-template-columns: 120px 1fr; }
+    .post-image { height: 100%; }
+    .post-image img { width: 100%; height: 100%; object-fit: cover; }
+    .post-content { padding: 1.25rem; }
+    .post-excerpt {
+      font-size: 0.85rem; color: var(--text-secondary);
+      line-height: 1.6; margin: 0.5rem 0;
+    }
+    .post-footer-mini { margin-top: 0.75rem; }
+    .read-more-link { font-size: 0.85rem; font-weight: 600; color: var(--primary); }
+
+    /* Tags */
+    .tags-cloud { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .tag {
+      padding: 0.4rem 0.9rem; border-radius: 9999px;
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      color: var(--text-secondary); font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .tag:hover {
+      background: rgba(88,166,255,0.1); border-color: rgba(88,166,255,0.3);
+      color: var(--primary); text-decoration: none;
+    }
+    .tag-ielts { background: rgba(88,166,255,0.08); color: var(--primary); }
+
+    /* Footer */
+    .site-footer {
+      background: linear-gradient(135deg, #0a0e15, #111820);
+      border-top: 1px solid var(--border); margin-top: 4rem;
+      padding: 3rem 0 1.5rem;
+    }
+    [data-theme="light"] .site-footer {
+      background: linear-gradient(135deg, #f0f2f5, #e8ecf0);
+    }
+    .footer-content {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Noto Serif SC', serif; font-size: 1.1rem;
+      font-weight: 700; color: var(--text);
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--text-secondary); font-size: 0.85rem; }
+    .footer-links a:hover { color: var(--primary); }
+    .footer-bottom {
+      text-align: center; border-top: 1px solid var(--border); padding-top: 1.5rem;
+    }
+    .footer-bottom p { font-size: 0.8rem; color: var(--text-muted); }
+    .busuanzi { margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted); }
+
+    @media (max-width: 768px) {
+      .post-card.featured { grid-template-columns: 1fr; }
+      .post-card-small { grid-template-columns: 1fr; }
+      .post-card-small .post-image { height: 160px; }
+      .hero-title { font-size: 1.8rem; }
+      .main-nav { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle" title="切换主题">☀️</button>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="./blog/" class="logo">陈思豫的博客</a>
+      <nav class="main-nav">
+        <a href="./blog/" class="nav-link active">首页</a>
+        <a href="./blog/about.html" class="nav-link">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">✨ Welcome</div>
+      <h1 class="hero-title">记录学习，分享生活</h1>
+      <p class="hero-desc">这里是我的个人博客，我会分享学习心得、备考经验和生活感悟。</p>
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-num">1</span><span class="stat-label">篇文章</span></div>
+        <div class="stat-item"><span class="stat-num">1</span><span class="stat-label">个分类</span></div>
+        <div class="stat-item"><span class="stat-num">6.5</span><span class="stat-label">雅思总分</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">📌 置顶文章</h2>
+      <article class="post-card featured" onclick="window.location.href='./ielts/index.html'">
+        <div class="post-cover">
+          <img src="./blog/ielts/hero-bg.jpg" alt="雅思备考">
+          <div class="post-cover-overlay"><span class="post-cover-badge">🔥 热门</span></div>
+        </div>
+        <div class="post-body">
+          <div class="post-meta">
+            <span class="post-tag ielts">雅思备考</span>
+            <span class="post-date">2025年1月15日</span>
+            <span class="post-readtime">⭐ 8 分钟</span>
+          </div>
+          <h3 class="post-title">三个月雅思备考经验</h3>
+          <p class="post-desc">大一寒假集中学习3个月，首考总分6.5。听力6.5 · 阅读7.5 · 写作6.5 · 口语5.5。涵盖听力、阅读、写作的详细备考方法和推荐资源。</p>
+          <div class="scores-preview">
+            <span class="score-tag listening">听力 6.5</span>
+            <span class="score-tag reading">阅读 7.5</span>
+            <span class="score-tag writing">写作 6.5</span>
+            <span class="score-tag overall">总分 6.5</span>
+          </div>
+          <div class="post-footer">
+            <span class="read-more">阅读完整文章 →</span>
+            <span class="post-note">Deepseek 提示词 · AI vs 真人批改 · 博主推荐</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- All Posts -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">📝 全部文章</h2>
+      <div class="posts-grid">
+        <article class="post-card post-card-small" onclick="window.location.href='./ielts/index.html'">
+          <div class="post-image"><img src="./blog/ielts/ielts-logo.png" alt="IELTS"></div>
+          <div class="post-content">
+            <div class="post-meta">
+              <span class="post-tag ielts">雅思备考</span>
+              <span class="post-date">2025.01.15</span>
+            </div>
+            <h3 class="post-title">三个月雅思备考经验</h3>
+            <p class="post-excerpt">雅思首考6.5分备考全攻略，含听力、阅读、写作详细方法...</p>
+            <div class="post-footer-mini"><span class="read-more-link">阅读全文 →</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tags -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">🏷️ 分类</h2>
+      <div class="tags-cloud">
+        <span class="tag tag-ielts">#雅思备考</span>
+        <span class="tag">#IELTS</span>
+        <span class="tag">#备考经验</span>
+        <span class="tag">#听力</span>
+        <span class="tag">#阅读</span>
+        <span class="tag">#写作</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <a href="./blog/" class="footer-logo">陈思豫的博客</a>
+        <div class="footer-links">
+          <a href="./blog/">首页</a>
+          <a href="./blog/about.html">关于</a>
+          <a href="https://github.com/yyyyuuuu28" target="_blank">GitHub</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 陈思豫 · 雅思首考 6.5 · Designed with ❤️</p>
+        <div class="busuanzi">
+          <span id="busuanzi_container_site_pv">🌐 全站 <span id="busuanzi_value_site_pv" style="font-family:monospace">--</span> 次访问</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+  <script>
+    document.getElementById('themeToggle').addEventListener('click', function() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+      this.textContent = current === 'dark' ? '🌙' : '☀️';
+    });
+  </script>
+</body>
+</html>
